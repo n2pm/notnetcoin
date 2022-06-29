@@ -17,6 +17,7 @@ $ $EDITOR .env
 
 $ pnpm i
 $ pnpx prisma generate
+$ pnpx prisma migrate deploy
 $ pnpx tsc
 
 $ node ./dist/index

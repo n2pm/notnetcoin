@@ -5,8 +5,9 @@ import bodyParser from "koa-bodyparser";
 import Router from "@koa/router";
 import validator, { Joi } from "koa-context-validator";
 
-import { getAccessToken, getUserInfo } from "./discord";
+import { getAccessToken } from "./discord";
 import {
+  addDaily,
   createOrUpdateUser,
   getTransaction,
   getUserFromID,
@@ -165,6 +166,48 @@ router.get(
       apiKey: user.apiKey,
       balance: user.balance
     } as UserInfo;
+  }
+);
+
+router.get(
+  "/daily",
+  validator({
+    headers: Joi.object()
+      .keys({
+        authorization: Joi.string().required()
+      })
+      .unknown()
+  }),
+  async (ctx) => {
+    const apiKey = ctx.request.headers["authorization"] as string | null;
+
+    if (apiKey == null) {
+      ctx.status = 401;
+      return;
+    }
+
+    const user = await getUserFromKey(apiKey!);
+    if (user == null) {
+      ctx.status = 401;
+      return;
+    }
+
+    if (user.dailyReset <= new Date()) {
+      const num = await addDaily(user);
+
+      ctx.status = 200;
+      ctx.body = {
+        amount: num
+      };
+      return;
+    } else {
+      ctx.status = 400;
+      ctx.body = {
+        error: "Not yet ready.",
+        reset: user.dailyReset.getTime()
+      };
+      return;
+    }
   }
 );
 

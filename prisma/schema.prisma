@@ -16,8 +16,9 @@ model User {
   refreshToken String
   tokenExpiry  DateTime
 
-  apiKey  String @unique
-  balance Int
+  apiKey     String   @unique
+  balance    Int
+  dailyReset DateTime @default(now())
 }
 
 model Transaction {

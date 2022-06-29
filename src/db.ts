@@ -109,6 +109,22 @@ export async function getTransaction(id: string): Promise<Transaction | null> {
   return transaction;
 }
 
+export async function addDaily(user: User): Promise<number> {
+  const amt = Math.floor(Math.random() * (50 - 2) + 1);
+
+  await prisma.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      balance: user.balance + amt,
+      dailyReset: new Date(Date.now() + 86400000)
+    }
+  });
+
+  return amt;
+}
+
 async function handleRefresh() {
   const expiringUsers = await prisma.user.findMany({
     where: {
