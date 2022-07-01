@@ -77,12 +77,18 @@ router.post(
 
     if (apiKey == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
     const user = await getUserFromKey(apiKey!);
     if (user == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
@@ -149,12 +155,18 @@ router.get(
 
     if (apiKey == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
     const user = await getUserFromKey(apiKey!);
     if (user == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
@@ -183,12 +195,18 @@ router.get(
 
     if (apiKey == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
     const user = await getUserFromKey(apiKey!);
     if (user == null) {
       ctx.status = 401;
+      ctx.body = {
+        error: "Invalid API key."
+      };
       return;
     }
 
